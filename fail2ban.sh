@@ -195,7 +195,7 @@ action = %(action_)s
 # SSH servers
 #
 
-[ssh]
+[sshd]
 enabled = true
 port = 2222
 filter = sshd
@@ -226,6 +226,14 @@ banaction = ufw-nginx-http-auth
 port = http,https
 logpath = /var/log/auth.log
 maxretry = 3
+
+[vnc]
+enabled = true
+filter = ufw-vnc
+port = 5900
+banaction = ufw-vnc
+logpath = /var/log/auth.log
+maxretry = 8
 
 [nginx-botsearch]
 
@@ -314,44 +322,33 @@ EOF
 
 # ------------------------------------------------------------------------------------------
 
-cat > /etc/fail2ban/filter.d/vnc.conf << "EOF"
+cat > /etc/fail2ban/filter.d/ufw-vnc.conf << "EOF"
+
+[INCLUDES]
+
+before = common.conf
 
 [Definition]
-actionstart =
-actionstop =
-actioncheck =
-actionban = ufw insert 2 deny on <protocol> from <ip> to any app VNC
-actionunban = ufw delete deny on <protocol> from <ip> to any app VNC
 
-[Init]
-# Option: insertpos
-# Notes.:  The position number in the firewall list to insert the block rule
-insertpos = 1
+_daemon = (?:screensharingd|vnc)
 
-# Option: blocktype
-# Notes.: reject or deny
-blocktype = reject
+failregex = ^%(__prefix_line)sAuthentication: FAILED :: User Name: .*? :: Viewer Address: <HOST> :: Type: (?:DH|.*?)$
 
-# Option: destination
-# Notes.: The destination address to block in the ufw rule
-destination = any
+ignoreregex =
 
-# Option: application
-# Notes.: application from sudo ufw app list
-application =
 
 EOF
 
 # ------------------------------------------------------------------------------------------
 
-cat > /etc/fail2ban/action.d/vnc.conf << "EOF"
+cat > /etc/fail2ban/action.d/ufw-vnc.conf << "EOF"
 
 [Definition]
 actionstart =
 actionstop =
 actioncheck =
-actionban = ufw insert 2 deny on <protocol> from <ip> to any app VNC
-actionunban = ufw delete deny on <protocol> from <ip> to any app VNC
+actionban = ufw insert 2 deny on <protocol> from <ip> to any VNC
+actionunban = ufw delete deny on <protocol> from <ip> to any VNC
 
 [Init]
 # Option: insertpos
