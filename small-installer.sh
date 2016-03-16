@@ -130,8 +130,8 @@ echo -e "\033[0;32m INSTALL LYNIS\e[0m"
 sudo apt-get install -y lynis
 
 # UNATTEDED-UPGRADES
-echo -e "\033[0;32m INSTALL UNATTENDED\e[0m"
-./srv-autoinstaller/unattended.sh
+# echo -e "\033[0;32m INSTALL UNATTENDED\e[0m"
+# ./srv-autoinstaller/unattended.sh
 
 echo -e "\033[0;32m END SMALL INSTALATION !\e[0m"
 
