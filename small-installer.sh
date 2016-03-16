@@ -29,7 +29,7 @@ echo -e "\033[0;32m ADD SAFE USER\e[0m"
 # ADD SAFE USER
 useradd -s /bin/bash -m -d /home/ubuntu -c "ubuntu" ubuntu
 gpasswd -a ubuntu sudo
-echo ubuntu:$rootpassword | /usr/sbin/chpasswd
+echo ubuntu:"testing" | /usr/sbin/chpasswd
 
 echo -e "\033[0;32m COPY AUTHORIZED_KEYS TO UBUNTU .SSH USER\e[0m"
 # COPY AUTHORIZED_KEYS TO UBUNTU .SSH USER
