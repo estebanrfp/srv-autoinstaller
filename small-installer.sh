@@ -82,8 +82,8 @@ echo -e "\033[0;32m INSTALL GIT\e[0m"
 apt-get install -y git
 
 # ADD-GITHUB-RSA-PUB
-echo -e "\033[0;32m ADD-GITHUB-RSA-PUB\e[0m"
-ssh-keygen -q -b 4096 -t rsa -N "" -f ~/.ssh/id_rsa
+# echo -e "\033[0;32m ADD-GITHUB-RSA-PUB\e[0m"
+# ssh-keygen -q -b 4096 -t rsa -N "" -f ~/.ssh/id_rsa
 
 # PM2
 echo -e "\033[0;32m INSTALL PM2\e[0m"
