@@ -43,10 +43,11 @@ bantime  = 86400
 
 # A host is banned if it has generated "maxretry" during the last "findtime"
 # seconds.
-findtime  = 3600
+# Testing to 10 default 3600
+findtime  = 10
 
 # "maxretry" is the number of failures before a host get banned.
-maxretry = 4
+maxretry = 3
 
 # "backend" specifies the backend used to get files modification.
 # Available options are "pyinotify", "gamin", "polling", "systemd" and "auto".
@@ -199,46 +200,46 @@ action = %(action_)s
 enabled = true
 port = 2222
 filter = sshd
-banaction = ufw-ssh
-logpath = /var/log/auth.log
-maxretry = 4
+banaction = ufw
+logpath = /var/log/jailsec.log
+maxretry = 3
 
 [sshd-ddos]
 enabled = true
-banaction = ufw-sshd-ddos
+banaction = ufw
 port    = 2222
 filter  = sshd-ddos
-logpath  = /var/log/auth.log
-maxretry = 4
+logpath  = /var/log/jailsec.log
+maxretry = 3
 
 [apache-badbots]
 enabled  = true
-banaction = ufw-apache-badbots
+banaction = ufw
 port    = http,https
 filter   = apache-badbots
-logpath  = /var/log/nginx*/*access.log
+logpath  = /var/log/jailsec.log
 bantime  = 172800
 maxretry = 2
 
 [nginx-http-auth]
 enabled = true
-banaction = ufw-nginx-http-auth
+banaction = ufw
 port = http,https
-logpath = /var/log/auth.log
+logpath = /var/log/jailsec.log
 maxretry = 3
 
 [vnc]
 enabled = true
 filter = ufw-vnc
 port = 5900
-banaction = ufw-vnc
-logpath = /var/log/auth.log
-maxretry = 8
+banaction = ufw
+logpath = /var/log/jailsec.log
+maxretry = 5
 
 [nginx-botsearch]
 
 port     = http,https
-logpath  = %(nginx_error_log)s
+logpath  = /var/log/jailsec.log
 maxretry = 2
 
 #
@@ -258,68 +259,6 @@ logpath  = %(syslog_mail)s
 
 EOF
 
-
-# ----------------------------------------------------------------------------------------
-
-cat > /etc/fail2ban/action.d/ufw-sshd-ddos.conf << "EOF"
-
-[Definition]
-actionstart =
-actionstop =
-actioncheck =
-actionban = ufw insert 2 deny on <protocol> from <ip> to any app sshd-ddos
-actionunban = ufw delete deny on <protocol> from <ip> to any app sshd-ddos
-
-[Init]
-# Option: insertpos
-# Notes.:  The position number in the firewall list to insert the block rule
-insertpos = 1
-
-# Option: blocktype
-# Notes.: reject or deny
-blocktype = reject
-
-# Option: destination
-# Notes.: The destination address to block in the ufw rule
-destination = any
-
-# Option: application
-# Notes.: application from sudo ufw app list
-application =
-
-EOF
-
-
-# ------------------------------------------------------------------------------------------
-
-cat > /etc/fail2ban/action.d/ufw-ssh.conf << "EOF"
-
-[Definition]
-actionstart =
-actionstop =
-actioncheck =
-actionban = ufw insert 1 deny on <protocol> from <ip> to any app OpenSSH
-actionunban = ufw delete deny on <protocol> from <ip> to any app OpenSSH
-
-[Init]
-# Option: insertpos
-# Notes.:  The position number in the firewall list to insert the block rule
-insertpos = 1
-
-# Option: blocktype
-# Notes.: reject or deny
-blocktype = reject
-
-# Option: destination
-# Notes.: The destination address to block in the ufw rule
-destination = any
-
-# Option: application
-# Notes.: application from sudo ufw app list
-application =
-
-EOF
-
 # ------------------------------------------------------------------------------------------
 
 cat > /etc/fail2ban/filter.d/ufw-vnc.conf << "EOF"
@@ -336,96 +275,6 @@ failregex = ^%(__prefix_line)sAuthentication: FAILED :: User Name: .*? :: Viewer
 
 ignoreregex =
 
-
-EOF
-
-# ------------------------------------------------------------------------------------------
-
-cat > /etc/fail2ban/action.d/ufw-vnc.conf << "EOF"
-
-[Definition]
-actionstart =
-actionstop =
-actioncheck =
-actionban = ufw insert 2 deny on <protocol> from <ip> to any VNC
-actionunban = ufw delete deny on <protocol> from <ip> to any VNC
-
-[Init]
-# Option: insertpos
-# Notes.:  The position number in the firewall list to insert the block rule
-insertpos = 1
-
-# Option: blocktype
-# Notes.: reject or deny
-blocktype = reject
-
-# Option: destination
-# Notes.: The destination address to block in the ufw rule
-destination = any
-
-# Option: application
-# Notes.: application from sudo ufw app list
-application =
-
-EOF
-
-# ------------------------------------------------------------------------------------------
-
-cat > /etc/fail2ban/action.d/ufw-apache-badbots.conf << "EOF"
-
-[Definition]
-actionstart =
-actionstop =
-actioncheck =
-actionban = ufw insert 2 deny on <protocol> from <ip> to any app apache-badbots
-actionunban = ufw delete deny on <protocol> from <ip> to any app apache-badbots
-
-[Init]
-# Option: insertpos
-# Notes.:  The position number in the firewall list to insert the block rule
-insertpos = 1
-
-# Option: blocktype
-# Notes.: reject or deny
-blocktype = reject
-
-# Option: destination
-# Notes.: The destination address to block in the ufw rule
-destination = any
-
-# Option: application
-# Notes.: application from sudo ufw app list
-application =
-
-EOF
-
-# ------------------------------------------------------------------------------------------
-
-cat > /etc/fail2ban/action.d/ufw-nginx-http-auth.conf << "EOF"
-
-[Definition]
-actionstart =
-actionstop =
-actioncheck =
-actionban = ufw insert 2 deny on <protocol> from <ip> port <port>
-actionunban = ufw delete deny on <protocol> from <ip> port <port>
-
-[Init]
-# Option: insertpos
-# Notes.:  The position number in the firewall list to insert the block rule
-insertpos = 1
-
-# Option: blocktype
-# Notes.: reject or deny
-blocktype = reject
-
-# Option: destination
-# Notes.: The destination address to block in the ufw rule
-destination = any
-
-# Option: application
-# Notes.: application from sudo ufw app list
-application =
 
 EOF
 
