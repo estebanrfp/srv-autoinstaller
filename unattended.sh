@@ -15,7 +15,7 @@ EOF
 
 #-----------------------------------------------------
 
-cat > /etc/fail2ban/jail.local << "EOF"
+cat > /etc/apt/apt.conf.d/50unattended-upgrades << "EOF"
 
 // Automatically upgrade packages from these (origin:archive) pairs
 Unattended-Upgrade::Allowed-Origins {
