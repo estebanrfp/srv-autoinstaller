@@ -283,4 +283,6 @@ EOF
 # IGNORE IP + LOCAL IP
 IGNORE_IP="127.0.0.1/8 $(curl ipinfo.io/ip)"
 
+touch /var/log/jailsec.log
+
 sudo service fail2ban restart

@@ -4,8 +4,6 @@
 
 sudo mkdir /etc/nginx/ssl
 
-#openssl ca -batch -config "$CONF" -out "$BOXCERT" -infiles "$CSRFILE"
-
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/nginx.key -out /etc/nginx/ssl/temp-nginx.crt -subj "/C=ES/ST=VALENCIA/L=VALENCIA/O=desarrolloactivo.com/OU=D.A./CN=desarrolloactivo.com/emailAddress=admin@desarrolloactivo.com"
 
 sudo openssl req -new -key /etc/nginx/ssl/nginx.key -out nginx.csr -subj "/C=ES/ST=VALENCIA/L=VALENCIA/O=desarrolloactivo.com/OU=D.A./CN=desarrolloactivo.com/emailAddress=admin@desarrolloactivo.com"
