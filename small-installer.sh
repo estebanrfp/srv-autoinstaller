@@ -114,7 +114,7 @@ sed -i -e '/^UsePAM/s/^.*$/UsePAM no/' /etc/ssh/sshd_config
 sed -i -e '/^#PasswordAuthentication/s/^.*$/PasswordAuthentication no/' /etc/ssh/sshd_config
 
 # ChangeSSHPort
-sed -i -e '/^Port/s/^.*$/Port '${SSHPort}'/' /etc/ssh/sshd_config
+sed -i -e '/^Port/s/^.*$/Port 2222/' /etc/ssh/sshd_config
 
 # FAIL2BAN
 echo -e "\033[0;32m INSTALL FAIL2BAN\e[0m"
