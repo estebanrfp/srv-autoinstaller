@@ -201,7 +201,7 @@ enabled = true
 port = 2222
 filter = sshd
 banaction = ufw
-logpath = /var/log/jailsec.log
+logpath = /var/log/auth.log
 maxretry = 3
 
 [sshd-ddos]
@@ -209,7 +209,7 @@ enabled = true
 banaction = ufw
 port    = 2222
 filter  = sshd-ddos
-logpath  = /var/log/jailsec.log
+logpath  = /var/log/auth.log
 maxretry = 3
 
 [apache-badbots]
@@ -217,7 +217,7 @@ enabled  = true
 banaction = ufw
 port    = http,https
 filter   = apache-badbots
-logpath  = /var/log/jailsec.log
+logpath  = /var/log/auth.log
 bantime  = 172800
 maxretry = 2
 
@@ -225,7 +225,7 @@ maxretry = 2
 enabled = true
 banaction = ufw
 port = http,https
-logpath = /var/log/jailsec.log
+logpath = /var/log/auth.log
 maxretry = 3
 
 [vnc]
@@ -233,13 +233,13 @@ enabled = true
 filter = ufw-vnc
 port = 5900
 banaction = ufw
-logpath = /var/log/jailsec.log
+logpath = /var/log/auth.log
 maxretry = 5
 
 [nginx-botsearch]
 
 port     = http,https
-logpath  = /var/log/jailsec.log
+logpath  = /var/log/auth.log
 maxretry = 2
 
 #
@@ -282,7 +282,5 @@ EOF
 
 # IGNORE IP + LOCAL IP
 IGNORE_IP="127.0.0.1/8 $(curl ipinfo.io/ip)"
-
-touch /var/log/jailsec.log
 
 sudo service fail2ban restart
