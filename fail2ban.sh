@@ -225,6 +225,7 @@ maxretry = 2
 enabled = true
 banaction = ufw
 port = http,https
+filter = nginx-http-auth
 logpath = /var/log/auth.log
 maxretry = 3
 
