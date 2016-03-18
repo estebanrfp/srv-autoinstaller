@@ -228,14 +228,6 @@ port = http,https
 logpath = /var/log/auth.log
 maxretry = 3
 
-[vnc]
-enabled = true
-filter = ufw-vnc
-port = 5900
-banaction = ufw
-logpath = /var/log/auth.log
-maxretry = 5
-
 [nginx-botsearch]
 
 port     = http,https
@@ -256,25 +248,6 @@ logpath = %(syslog_mail)s
 
 port     = smtp,465,submission
 logpath  = %(syslog_mail)s
-
-EOF
-
-# ------------------------------------------------------------------------------------------
-
-cat > /etc/fail2ban/filter.d/ufw-vnc.conf << "EOF"
-
-[INCLUDES]
-
-before = common.conf
-
-[Definition]
-
-_daemon = (?:screensharingd|vnc)
-
-failregex = ^%(__prefix_line)sAuthentication: FAILED :: User Name: .*? :: Viewer Address: <HOST> :: Type: (?:DH|.*?)$
-
-ignoreregex =
-
 
 EOF
 
